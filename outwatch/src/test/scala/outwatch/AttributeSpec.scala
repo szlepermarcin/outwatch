@@ -66,6 +66,32 @@ class AttributeSpec extends JSDomSpec {
     """input(data.:= "bar")""" shouldNot compile
   }
 
+  "aria attributes" should "be able to be accumulated" in {
+
+    val node = SnabbdomOps.toSnabbdom(input(
+      aria.foo.accum(",") := "foo1",
+      aria.foo.accum(",") := "foo2"
+    ))
+
+    node.data.get.attrs.get.toList shouldBe List("aria-foo" -> "foo1,foo2")
+  }
+
+  "aria attribute" should "correctly render only Aria" in {
+    val node = SnabbdomOps.toSnabbdom(input(
+      aria.geul := "bar",
+      aria.geuli.gurk := "barz"
+    ))
+
+    node.data.get.attrs.get.toList should contain theSameElementsAs List(
+      "aria-geul" -> "bar",
+      "aria-geuli-gurk" -> "barz"
+    )
+  }
+
+  it should "not compile aria.without suffix" in {
+    """input(aria.:= "bar")""" shouldNot compile
+  }
+
   //TODO: doesn't compile but test still fails
 //   it should "not compile data without suffix" in {
 //     """input(data := "bar")""" shouldNot compile

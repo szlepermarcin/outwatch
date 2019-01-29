@@ -84,6 +84,8 @@ trait AttributeHelpers { self: Attributes =>
 
   lazy val data = new DynamicAttrBuilder[Any]("data" :: Nil)
 
+  lazy val aria = new DynamicAttrBuilder[Any]("aria" :: Nil)
+
   @inline def attr[T](key: String, convert: T => Attr.Value = (t: T) => t.toString : Attr.Value) = new BasicAttrBuilder[T](key, convert)
   @inline def prop[T](key: String, convert: T => Prop.Value = (t: T) => t) = new PropBuilder[T](key, convert)
   @inline def style[T](key: String) = new BasicStyleBuilder[T](key)
